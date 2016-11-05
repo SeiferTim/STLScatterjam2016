@@ -40,7 +40,7 @@ class Bullet extends FlxSprite
 		bulletType = BulletType;
 		velocity.set(XVelocity, YVelocity);
 		if (trail == null)
-			trail = new Trail(this, Trail.STYLE_NONE, .5);
+			trail = new Trail(this, Trail.STYLE_NONE, .2);
 		
 		trail.revive();
 	}

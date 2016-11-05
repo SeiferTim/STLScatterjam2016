@@ -11,6 +11,6 @@ class Main extends Sprite
 		GraphicsCache.init();
 		Globals.loadGame();
 		super();
-		addChild(new FlxGame(320, 240, PlayState));
+		addChild(new FlxGame(640, 480, PlayState));
 	}
 }

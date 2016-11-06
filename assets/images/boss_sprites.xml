@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="sprites.png">
+	<!--
+	Created with ShoeBox
+	http://renderhjs.net/shoebox/
+	-->
+	<SubTexture name="boss_arm_00.png"	x="451"	y="0"	width="100"	height="70" frameX="-0" frameY="-0" frameWidth="100" frameHeight="70"/>
+	<SubTexture name="boss_arm_01.png"	x="451"	y="71"	width="100"	height="70" frameX="-0" frameY="-0" frameWidth="100" frameHeight="70"/>
+	<SubTexture name="boss_body_00.png"	x="321"	y="191"	width="320"	height="320" frameX="-0" frameY="-0" frameWidth="320" frameHeight="320"/>
+	<SubTexture name="boss_body_01.png"	x="0"	y="191"	width="320"	height="320" frameX="-0" frameY="-0" frameWidth="320" frameHeight="320"/>
+	<SubTexture name="boss_body_up.png"	x="322"	y="512"	width="140"	height="130" frameX="-0" frameY="-0" frameWidth="140" frameHeight="130"/>
+	<SubTexture name="boss_head_00.png"	x="161"	y="512"	width="160"	height="160" frameX="-0" frameY="-0" frameWidth="160" frameHeight="160"/>
+	<SubTexture name="boss_head_01.png"	x="0"	y="512"	width="160"	height="160" frameX="-0" frameY="-0" frameWidth="160" frameHeight="160"/>
+	<SubTexture name="boss_mound.png"	x="0"	y="0"	width="450"	height="190" frameX="-0" frameY="-0" frameWidth="450" frameHeight="190"/>
+</TextureAtlas>

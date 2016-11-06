@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="sprites.png">
+	<!--
+	Created with ShoeBox
+	http://renderhjs.net/shoebox/
+	-->
+	<SubTexture name="enemy_bullet_00.png"	x="33"	y="0"	width="32"	height="16" frameX="-0" frameY="-0" frameWidth="32" frameHeight="16"/>
+	<SubTexture name="enemy_bullet_01.png"	x="0"	y="0"	width="32"	height="16" frameX="-0" frameY="-0" frameWidth="32" frameHeight="16"/>
+	<SubTexture name="enemy_bullet_02.png"	x="0"	y="17"	width="32"	height="16" frameX="-0" frameY="-0" frameWidth="32" frameHeight="16"/>
+	<SubTexture name="enemy_bullet_03.png"	x="0"	y="34"	width="32"	height="16" frameX="-0" frameY="-0" frameWidth="32" frameHeight="16"/>
+</TextureAtlas>

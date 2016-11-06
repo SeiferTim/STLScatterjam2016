@@ -109,6 +109,8 @@ class Trail extends FlxSprite
 			alpha = alphaMod;
 			x = target.x - target.offset.x;
 			y = target.y - target.offset.y;
+			
+			
 			super.update(elapsed);
 		}
 		else

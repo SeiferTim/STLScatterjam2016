@@ -4,14 +4,17 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.addons.effects.FlxTrailArea;
+import flixel.effects.particles.FlxEmitter;
 import flixel.graphics.frames.FlxBitmapFont;
 import flixel.group.FlxGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.math.FlxPoint;
 import flixel.text.FlxBitmapText;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
 import flixel.util.FlxColor;
+import flixel.util.FlxSort;
 import hx.strings.spelling.checker.EnglishSpellChecker;
 import hx.strings.spelling.dictionary.EnglishDictionary;
 
@@ -22,11 +25,14 @@ class PlayState extends FlxState
 	public var lyrPlayer:FlxTypedGroup<Player>;
 	public var lyrTrails:FlxTrailArea;
 	public var lyrPBullets:FlxTypedGroup<Bullet>;
+	public var lyrEBullets:FlxTypedGroup<EBullet>;
 	public var lyrEnemies:FlxTypedGroup<Enemy>;
 	public var lyrLetters:FlxTypedGroup<Letter>;
+	public var lyrDeaths:FlxTypedGroup<Death>;
 	public var lyrGUI:FlxGroup;
 	
 	public var lyrBG02:FlxTypedGroup<BackgroundSprite.BG02>;
+	public var lyrBG021:FlxTypedGroup<BackgroundSprite.BG021>;
 	public var lyrBG01:FlxTypedGroup<BackgroundSprite.BG01>;
 	public var lyrBG00:FlxTypedGroup<BackgroundSprite.BG00>;
 	public var lyrBG001:FlxTypedGroup<BackgroundSprite.BG001>;
@@ -36,6 +42,9 @@ class PlayState extends FlxState
 	public var lyrBG005:FlxTypedGroup<BackgroundSprite.BG005>;
 	public var lyrFG00:FlxTypedGroup<BackgroundSprite.FG00>;
 	public var lyrFG01:FlxTypedGroup<BackgroundSprite.FG01>;
+	
+	public var lyrTopTrails:FlxTrailArea;
+	public var lyrBursts:FlxTypedGroup<Burst>;
 	
 	
 	public var braces:Array<FlxSprite>;
@@ -52,6 +61,9 @@ class PlayState extends FlxState
 	public var playerHealth:Int = 6;
 	public var healths:Array<HealthIcon>;
 	
+	public var bossSpawned:Bool = false;
+	public var bossReady:Bool = false;
+	
 	override public function create():Void
 	{
 		bgColor = 0xffe1d0e6;
@@ -65,6 +77,7 @@ class PlayState extends FlxState
 		lyrBG01 = new FlxTypedGroup<BackgroundSprite.BG01>();
 		
 		lyrBG02 = new FlxTypedGroup<BackgroundSprite.BG02>();
+		lyrBG021 = new FlxTypedGroup<BackgroundSprite.BG021>();
 		lyrTrails = new FlxTrailArea(0, 0, FlxG.width, FlxG.height);
 		lyrPBullets = new FlxTypedGroup<Bullet>();
 		lyrPlayer = new FlxTypedGroup<Player>();
@@ -72,7 +85,12 @@ class PlayState extends FlxState
 		lyrLetters = new FlxTypedGroup<Letter>();
 		lyrFG00 = new FlxTypedGroup<BackgroundSprite.FG00>();
 		lyrFG01 = new FlxTypedGroup<BackgroundSprite.FG01>();
+		lyrEBullets = new FlxTypedGroup<EBullet>();
 		lyrGUI = new FlxGroup();
+		lyrDeaths = new FlxTypedGroup<Death>();
+		
+		lyrTopTrails = new FlxTrailArea(0, 0, FlxG.width, FlxG.height);
+		lyrBursts = new FlxTypedGroup<Burst>();
 		
 		collectedLetters = [];
 		
@@ -98,7 +116,7 @@ class PlayState extends FlxState
 		
 		
 		add(lyrBG02);
-		add(lyrBG02);
+		add(lyrBG021);
 		add(lyrBG01);
 		add(lyrBG005);
 		add(lyrBG004);
@@ -108,11 +126,17 @@ class PlayState extends FlxState
 		add(lyrBG00);
 		add(lyrTrails);
 		add(lyrEnemies);
+		add(lyrDeaths);
 		add(lyrPBullets);
 		add(lyrPlayer);
+		add(lyrEBullets);
 		
 		add(lyrFG00);
 		add(lyrFG01);
+		
+		add(lyrTopTrails);
+		add(lyrBursts);
+		
 		add(lyrGUI);
 		add(lyrLetters);
 		
@@ -142,6 +166,14 @@ class PlayState extends FlxState
 			b = lyrBG02.recycle(BackgroundSprite.BG02);
 			b.spawn(pos);
 			lyrBG02.add(cast b);
+			pos += b.width;
+		}
+		pos = 0;
+		while (pos <= FlxG.width * 2)
+		{
+			b = lyrBG021.recycle(BackgroundSprite.BG021);
+			b.spawn(pos);
+			lyrBG021.add(cast b);
 			pos += b.width;
 		}
 		pos = 0;
@@ -221,6 +253,30 @@ class PlayState extends FlxState
 		super.create();
 		
 	}
+	
+	public function spawnDeath(E:Enemy, ?X:Float = 0, ?Y:Float = 0):Void
+	{
+		var d:Death = lyrDeaths.recycle(Death);
+		if (X == 0 && Y == 0)
+		{
+			d.spawn(E.x + (E.width / 2), E.y + (E.height / 2), E.enemyType);
+		}
+		else
+		{
+			d.spawn(X, Y, E.enemyType);
+		}
+		lyrDeaths.add(d);
+	}
+	
+	public function burst(X:Float, Y:Float):Void
+	{
+		var e:Burst = lyrBursts.recycle(Burst);
+		e.x = X;
+		e.y = Y;
+		e.start(true);
+		lyrBursts.add(e);
+		
+	}
 
 	override public function update(elapsed:Float):Void
 	{
@@ -237,23 +293,43 @@ class PlayState extends FlxState
 		UIControl.checkControls(elapsed);
 		
 		playerMovement();
-		
-		shootTimer -= elapsed;
-		if (shootTimer <= 0)
+		if (shootTimer>0)
+			shootTimer -= elapsed;
+		else if (UIControl.wasJustPressed([UIControl.KEY_SHOOT]) && !player.flickering)
 		{
-			shootTimer += .2;
-			if (!player.flickering)
+			if ((bossSpawned && bossReady) || !bossSpawned)
+			{
+				shootTimer = .2;
 				playerShoot();
+			}
 		}
 		
 		spawnTimer -= elapsed;
 		if (spawnTimer <= 0)
 		{
-			for (i in 0...Std.parseInt(Globals.spawns[spawnItem]))
-			{
-				spawnEnemy();
+			if (spawnItem < Globals.spawns.length)
+			{			
+				var details:Array<String> = Globals.spawns[spawnItem].split(",");
+				
+				for (i in 0...Std.parseInt(details[0]))
+				{
+					spawnEnemy(0);
+				}
+				for (i in 0...Std.parseInt(details[1]))
+				{
+					spawnEnemy(1);
+				}
+				for (i in 0...Std.parseInt(details[2]))
+				{
+					spawnEnemy(2);
+				}
 			}
-			spawnTimer = .5;
+			else if (!bossSpawned)
+			{
+				bossSpawned = true;
+				spawnEnemy(4, 100, 100);
+			}
+			spawnTimer += 1;
 			spawnItem++;
 		}
 		
@@ -261,6 +337,7 @@ class PlayState extends FlxState
 		FlxG.overlap(lyrPBullets, lyrEnemies, notifyBulletHitEnemy, processBulletHitEnemy);
 		FlxG.overlap(player, lyrLetters, notifyCollectLetter, processCollectLetter);
 		FlxG.overlap(player, lyrEnemies, notifyEnemyHitPlayer, processEnemyHitPlayer);
+		FlxG.overlap(player, lyrEBullets, notifyEBulletHitPlayer, processEBulletHitPlayer);
 		
 		
 		
@@ -269,12 +346,31 @@ class PlayState extends FlxState
 		super.update(elapsed);
 	}
 	
+	private function processEBulletHitPlayer(P:SpriteSegment, E:EBullet):Bool
+	{
+		
+		return (P.isHitbox && P.parent.alive && P.parent.exists && !player.flickering && P.parent.isOnScreen() && E.alive && E.exists && E.isOnScreen());
+	}
+	
+	private function notifyEBulletHitPlayer(P:SpriteSegment, E:EBullet):Void
+	{
+		playerHealth--;
+		updateHealth();
+		if (playerHealth>0)
+			player.hit();
+		else
+		{
+			gameOver();
+		}
+		E.kill();
+	}
+	
 	private function notifyEnemyHitPlayer(P:SpriteSegment, E:SpriteSegment):Void
 	{
 		playerHealth--;
 		updateHealth();
 		if (playerHealth>0)
-			player.flicker(1);
+			player.hit();
 		else
 		{
 			gameOver();
@@ -283,10 +379,16 @@ class PlayState extends FlxState
 	
 	public function gameOver():Void
 	{
-		player.flicker(100);
-		FlxG.camera.fade(FlxColor.BLACK, 1, false, function() {
-			FlxG.switchState(new PlayState());
-		});
+		player.hit();
+		//FlxG.camera.fade(FlxColor.BLACK, 1, false, function() {
+		//	FlxG.switchState(new PlayState());
+		//});
+		openSubState(new GameOverSubState(ReturnFromGameOver));
+	}
+	
+	public function ReturnFromGameOver():Void
+	{
+		FlxG.switchState(new MenuState());
 	}
 	
 	public function updateHealth():Void
@@ -373,6 +475,8 @@ class PlayState extends FlxState
 					//}
 					
 					foundWord = EnglishDictionary.INSTANCE.exists(word);
+					if (foundWord)
+						trace(word);
 					
 				}
 			}
@@ -385,6 +489,44 @@ class PlayState extends FlxState
 		{
 			FlxG.camera.flash(FlxColor.WHITE, .2);
 			score+= length * 750;
+			lyrEnemies.forEachAlive(hitEnemies);
+		}
+	}
+	
+	private function hitEnemies(E:Enemy):Void
+	{
+		hurtEnemy(E, 3);
+	}
+	
+	public function hurtEnemy(E:Enemy, Damage:Int):Void
+	{
+		E.hurt(Damage);
+		if (!E.alive)
+		{
+			if (E.isBoss)
+			{
+				for (i in 0...10)
+				{
+					var X:Float = FlxG.random.float(E.x, E.x + E.width);
+					var Y:Float = FlxG.random.float(E.y, E.y + E.height);
+					spawnDeath(E,X, Y);
+				}
+				score+= 50000;
+				FlxG.camera.flash(FlxColor.WHITE, .2, function() {
+					FlxG.camera.flash(FlxColor.TRANSPARENT, .2, function() {
+						FlxG.camera.flash(FlxColor.WHITE, .2, function() {
+							openSubState(new VictorySubState(score,ReturnFromGameOver));
+						});
+					});
+				});
+			}
+			else
+			{
+				spawnDeath(E);
+				score+= 500;
+			}
+				
+			updateScore();
 		}
 	}
 	
@@ -396,13 +538,9 @@ class PlayState extends FlxState
 	
 	private function notifyBulletHitEnemy(B:Bullet, E:SpriteSegment):Void
 	{
+		burst(B.x + (B.width / 2), B.y + (B.height / 2));
 		B.kill();
-		E.parent.hurt(1);
-		if (!E.parent.alive)
-		{
-			score+= 500;
-			updateScore();
-		}
+		hurtEnemy(cast E.parent, 1);
 	}
 
 	public function updateScore():Void
@@ -412,13 +550,17 @@ class PlayState extends FlxState
 	
 	private function processBulletHitEnemy(B:Bullet, E:SpriteSegment):Bool
 	{
-		return (B.alive && B.exists && E.parent.alive && E.parent.exists && E.isHitbox && B.isOnScreen() && E.parent.isOnScreen());	
+		if (B.alive && B.exists && E.parent.alive && E.parent.exists && E.isHitbox && B.isOnScreen() && E.parent.isOnScreen())
+		{
+			return FlxG.pixelPerfectOverlap(B, E);
+		}
+		return false;	
 	}
 	
 	public function playerShoot():Void
 	{
 		var b:Bullet = lyrPBullets.recycle(Bullet);
-		b.shoot(player.x, player.y, 500);
+		b.shoot(player.x + player.shootFrom.x, player.y + player.shootFrom.y, 500);
 		lyrPBullets.add(b);
 	}
 	
@@ -449,9 +591,9 @@ class PlayState extends FlxState
 			player.y = 110;
 			up = false;
 		}
-		if (player.y > FlxG.height - player.height - 100)
+		if (player.y > FlxG.height - player.height - 110)
 		{
-			player.y = FlxG.height - player.height - 100;
+			player.y = FlxG.height - player.height - 110;
 			down = false;
 		}
 			
@@ -481,10 +623,47 @@ class PlayState extends FlxState
 		
 	}
 	
-	public function spawnEnemy():Void
+	public function spawnEnemy(EnemyType:Int = 0, ?X:Float =0, ?Y:Float =0):Void
 	{
-		var e:Enemy = new Enemy();
-		e.spawn(FlxG.width + 10, FlxG.random.float(32, FlxG.height - 48), 0, this);
+		var e:Enemy = lyrEnemies.recycle(Enemy);
+		if (X == 0 && Y == 0)
+		{
+			e.spawn(FlxG.width + 10, FlxG.random.float(110, FlxG.height - 110 - 80), EnemyType, this);
+		}
+		else
+		{
+			e.spawn(X, Y, EnemyType, this);
+		}
+		
 		lyrEnemies.add(e);
+		
+		lyrEnemies.sort(SortEnemies, FlxSort.DESCENDING);
+	}
+	
+	private function SortEnemies(Order:Int, E1:Enemy, E2:Enemy):Int
+	{
+		return FlxSort.byValues(Order, E1.liveTimer, E2.liveTimer);
+	}
+	
+	public function enemyShoot(E:Enemy):Void
+	{
+		var e:EBullet = lyrEBullets.recycle(EBullet);
+		
+		var v:FlxPoint = FlxPoint.get(400, 0);
+		
+		v.rotate(FlxPoint.weak(), 150);
+		e.shoot(E.head.x + (E.head.width / 2) + (e.width / 2), E.head.y + (E.head.height / 2) + (e.height / 2), v.x, v.y, -30);
+		lyrEBullets.add(e);
+		
+		e = lyrEBullets.recycle(EBullet);
+		v.rotate(FlxPoint.weak(), 30);
+		e.shoot(E.head.x + (E.head.width / 2) + (e.width / 2), E.head.y + (E.head.height / 2) + (e.height / 2), v.x, v.y, 0);
+		lyrEBullets.add(e);
+		
+		e = lyrEBullets.recycle(EBullet);
+		v.rotate(FlxPoint.weak(), 30);
+		e.shoot(E.head.x + (E.head.width / 2) + (e.width / 2), E.head.y + (E.head.height / 2) + (e.height / 2), v.x, v.y, 30);
+		lyrEBullets.add(e);
+		
 	}
 }

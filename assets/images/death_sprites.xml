@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="sprites.png">
+	<!--
+	Created with ShoeBox
+	http://renderhjs.net/shoebox/
+	-->
+	<SubTexture name="enemy_blob_death_gray_00.png"	x="161"	y="322"	width="160"	height="160" frameX="-0" frameY="-0" frameWidth="160" frameHeight="160"/>
+	<SubTexture name="enemy_blob_death_gray_01.png"	x="483"	y="0"	width="160"	height="160" frameX="-0" frameY="-0" frameWidth="160" frameHeight="160"/>
+	<SubTexture name="enemy_blob_death_gray_02.png"	x="322"	y="483"	width="160"	height="160" frameX="-0" frameY="-0" frameWidth="160" frameHeight="160"/>
+	<SubTexture name="enemy_blob_death_gray_03.png"	x="322"	y="322"	width="160"	height="160" frameX="-0" frameY="-0" frameWidth="160" frameHeight="160"/>
+	<SubTexture name="enemy_blob_death_gray_04.png"	x="322"	y="161"	width="160"	height="160" frameX="-0" frameY="-0" frameWidth="160" frameHeight="160"/>
+	<SubTexture name="enemy_blob_death_green_00.png"	x="322"	y="0"	width="160"	height="160" frameX="-0" frameY="-0" frameWidth="160" frameHeight="160"/>
+	<SubTexture name="enemy_blob_death_green_01.png"	x="161"	y="483"	width="160"	height="160" frameX="-0" frameY="-0" frameWidth="160" frameHeight="160"/>
+	<SubTexture name="enemy_blob_death_green_02.png"	x="483"	y="161"	width="160"	height="160" frameX="-0" frameY="-0" frameWidth="160" frameHeight="160"/>
+	<SubTexture name="enemy_blob_death_green_04.png"	x="161"	y="161"	width="160"	height="160" frameX="-0" frameY="-0" frameWidth="160" frameHeight="160"/>
+	<SubTexture name="enemy_blob_death_orange_00.png"	x="161"	y="0"	width="160"	height="160" frameX="-0" frameY="-0" frameWidth="160" frameHeight="160"/>
+	<SubTexture name="enemy_blob_death_orange_01.png"	x="0"	y="483"	width="160"	height="160" frameX="-0" frameY="-0" frameWidth="160" frameHeight="160"/>
+	<SubTexture name="enemy_blob_death_orange_02.png"	x="0"	y="322"	width="160"	height="160" frameX="-0" frameY="-0" frameWidth="160" frameHeight="160"/>
+	<SubTexture name="enemy_blob_death_orange_03.png"	x="0"	y="161"	width="160"	height="160" frameX="-0" frameY="-0" frameWidth="160" frameHeight="160"/>
+	<SubTexture name="enemy_blob_death_orange_04.png"	x="0"	y="0"	width="160"	height="160" frameX="-0" frameY="-0" frameWidth="160" frameHeight="160"/>
+</TextureAtlas>

@@ -9,5 +9,6 @@ class SpriteSegment extends FlxSprite
 
 	public var parent:FlxTypedSpriteGroup<SpriteSegment>;
 	public var isHitbox:Bool = false;
+	public var zOrder:Float = 0;
 	
 }

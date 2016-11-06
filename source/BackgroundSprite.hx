@@ -15,25 +15,27 @@ class BackgroundSprite extends FlxSprite
 		switch (which) 
 		{
 			case 0:
-				loadGraphic(AssetPaths.field_BG_02_clouds__png);
+				loadGraphic(AssetPaths.field_BG_02_clouds_01__png);
 			case 1:
 				loadGraphic(AssetPaths.field_BG_01_mountains__png);
 			case 2:
-				loadGraphic(AssetPaths.field_BG_00_flowers__png);
+				loadGraphic(AssetPaths.field_BG_00_flowers__png,true, 160, 155);
 			case 3:
 				loadGraphic(AssetPaths.field_FG_01_flowers__png);
 			case 4:
 				loadGraphic(AssetPaths.field_FG_00_flowers__png);
 			case 5:
-				loadGraphic(AssetPaths.field_BG_00_flowers__png);
+				loadGraphic(AssetPaths.field_BG_00_flowers__png,true, 160, 155);
 			case 6:
-				loadGraphic(AssetPaths.field_BG_00_flowers__png);
+				loadGraphic(AssetPaths.field_BG_00_flowers__png,true, 160, 155);
 			case 7:
-				loadGraphic(AssetPaths.field_BG_00_flowers__png);
+				loadGraphic(AssetPaths.field_BG_00_flowers__png,true, 160, 155);
 			case 8:
-				loadGraphic(AssetPaths.field_BG_00_flowers__png);
+				loadGraphic(AssetPaths.field_BG_00_flowers__png,true, 160, 155);
 			case 9:
-				loadGraphic(AssetPaths.field_BG_00_flowers__png);
+				loadGraphic(AssetPaths.field_BG_00_flowers__png, true, 160, 155);
+			case 10:
+				loadGraphic(AssetPaths.field_BG_02_clouds_00__png);
 				
 		}
 		kill();
@@ -48,7 +50,7 @@ class BackgroundSprite extends FlxSprite
 			case 0:
 				Y = 80;
 			case 1:
-				Y = 365;
+				Y = 370;
 			case 2:
 				Y = FlxG.height - height;
 			case 3:
@@ -65,6 +67,8 @@ class BackgroundSprite extends FlxSprite
 				Y = FlxG.height - height  - 140;
 			case 9:
 				Y = FlxG.height - height  - 150;
+			case 10:
+				Y = 40;
 		}
 		
 		reset(X, Y);
@@ -90,10 +94,14 @@ class BackgroundSprite extends FlxSprite
 			case 8:
 				velocity.x = -40;
 			case 9:
-				velocity.x = -20;
+				velocity.x = -25;
+			case 10:
+				velocity.x = -15;
 		}
+		if ((which == 2 || which >= 5) && which < 10)
+			animation.frameIndex = FlxG.random.int(0, 4);
 	}
-	
+		
 	override public function update(elapsed:Float):Void 
 	{
 		if (!alive || !exists)
@@ -125,6 +133,8 @@ class BackgroundSprite extends FlxSprite
 					l = cast cast(FlxG.state, PlayState).lyrBG004;
 				case 9:
 					l = cast cast(FlxG.state, PlayState).lyrBG005;
+				case 10:
+					l = cast cast(FlxG.state, PlayState).lyrBG021;
 			}
 			
 			var X:Float = FlxG.width;
@@ -134,6 +144,8 @@ class BackgroundSprite extends FlxSprite
 					X = m.x + m.width;
 			}
 			x = X;
+			if ((which == 2 || which >= 5) && which < 10)
+				animation.frameIndex = FlxG.random.int(0, 4);
 		}
 		
 		super.update(elapsed);
@@ -209,5 +221,12 @@ class FG01 extends BackgroundSprite
 	public function new() 
 	{
 		super(4);
+	}
+}
+class BG021 extends BackgroundSprite
+{
+	public function new() 
+	{
+		super(10);
 	}
 }

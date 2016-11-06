@@ -15,7 +15,12 @@ class Bullet extends FlxSprite
 	public function new() 
 	{
 		super();
-		makeGraphic(6, 6, FlxColor.ORANGE);
+		//makeGraphic(6, 6, FlxColor.ORANGE);
+		loadGraphic(AssetPaths.player_bullet__png, true, 24, 24);
+		offset.set(2, 2);
+		width = 20;
+		height = 20;
+		animation.add("spin", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 24, true);
 		kill();
 	}
 	
@@ -36,11 +41,12 @@ class Bullet extends FlxSprite
 	
 	public function shoot(X:Float = 0, Y:Float = 0,  XVelocity:Float = 0, YVelocity:Float = 0, BulletType:Int = 0):Void
 	{
-		reset(X, Y);
+		reset(X- (width/2), Y - (height/2));
 		bulletType = BulletType;
 		velocity.set(XVelocity, YVelocity);
+		animation.play("spin");
 		if (trail == null)
-			trail = new Trail(this, Trail.STYLE_NONE, .2);
+			trail = new Trail(this, Trail.STYLE_RAINBOW, .4);
 		
 		trail.revive();
 	}

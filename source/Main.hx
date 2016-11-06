@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxG;
 import flixel.FlxGame;
 import openfl.Lib;
 import openfl.display.Sprite;
@@ -11,6 +12,7 @@ class Main extends Sprite
 		GraphicsCache.init();
 		Globals.loadGame();
 		super();
-		addChild(new FlxGame(1280, 720, PlayState));
+		addChild(new FlxGame(1280, 720, IntroState));
+		FlxG.fullscreen = true;
 	}
 }

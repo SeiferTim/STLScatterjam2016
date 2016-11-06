@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="sprites.png">
+	<!--
+	Created with ShoeBox
+	http://renderhjs.net/shoebox/
+	-->
+	<SubTexture name="enemy_blob_gray_00.png"	x="162"	y="81"	width="80"	height="80" frameX="-0" frameY="-0" frameWidth="80" frameHeight="80"/>
+	<SubTexture name="enemy_blob_gray_01.png"	x="162"	y="0"	width="80"	height="80" frameX="-0" frameY="-0" frameWidth="80" frameHeight="80"/>
+	<SubTexture name="enemy_blob_gray_02.png"	x="81"	y="162"	width="80"	height="80" frameX="-0" frameY="-0" frameWidth="80" frameHeight="80"/>
+	<SubTexture name="enemy_blob_gray_03.png"	x="162"	y="0"	width="80"	height="80" frameX="-0" frameY="-0" frameWidth="80" frameHeight="80"/>
+	<SubTexture name="enemy_blob_green_00.png"	x="81"	y="81"	width="80"	height="80" frameX="-0" frameY="-0" frameWidth="80" frameHeight="80"/>
+	<SubTexture name="enemy_blob_green_01.png"	x="81"	y="0"	width="80"	height="80" frameX="-0" frameY="-0" frameWidth="80" frameHeight="80"/>
+	<SubTexture name="enemy_blob_green_02.png"	x="0"	y="162"	width="80"	height="80" frameX="-0" frameY="-0" frameWidth="80" frameHeight="80"/>
+	<SubTexture name="enemy_blob_green_03.png"	x="81"	y="0"	width="80"	height="80" frameX="-0" frameY="-0" frameWidth="80" frameHeight="80"/>
+	<SubTexture name="enemy_head_gray.png"	x="0"	y="81"	width="80"	height="80" frameX="-0" frameY="-0" frameWidth="80" frameHeight="80"/>
+	<SubTexture name="enemy_head_green.png"	x="0"	y="0"	width="80"	height="80" frameX="-0" frameY="-0" frameWidth="80" frameHeight="80"/>
+	<SubTexture name="enemy_wing_01.png"	x="162"	y="189"	width="19"	height="26" frameX="-0" frameY="-0" frameWidth="19" frameHeight="26"/>
+	<SubTexture name="enemy_wing_02.png"	x="162"	y="162"	width="19"	height="26" frameX="-0" frameY="-0" frameWidth="19" frameHeight="26"/>
+</TextureAtlas>

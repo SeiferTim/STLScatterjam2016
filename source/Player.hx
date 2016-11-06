@@ -9,6 +9,7 @@ import flixel.math.FlxPoint;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+import flixel.util.FlxSpriteUtil;
 
 class Player extends FlxTypedSpriteGroup<SpriteSegment> 
 {
@@ -23,6 +24,8 @@ class Player extends FlxTypedSpriteGroup<SpriteSegment>
 	
 	private var baseHead:FlxPoint;
 	private var baseTail:FlxPoint;
+	
+	public var flickering:Bool = false;
 	
 	public function new() 
 	{
@@ -39,50 +42,54 @@ class Player extends FlxTypedSpriteGroup<SpriteSegment>
 		drag.set(1600, 1600);
 		maxVelocity.set(400, 400);
 		
-		body = new SpriteSegment(0, 0);
+		var tex = GraphicsCache.loadGraphicFromAtlas("bee-body", AssetPaths.bee_sprites__png, AssetPaths.bee_sprites__xml).atlasFrames;
 		
-		body.frames = GraphicsCache.loadGraphicFromAtlas("bee-body", AssetPaths.bee_body__png, AssetPaths.bee_body__xml).atlasFrames;
-		body.animation.addByIndices("body", "sp_bee_body_", [0, 1, 2, 3], ".png", 12, true, true, false);
-		body.animation.play("body");
-		body.setFacingFlip(FlxObject.LEFT, true, false);
+		body = new SpriteSegment(0, 0);
+		body.frames = tex;
+		body.animation.frameName = "bee_body.png";
+		//body.animation.addByIndices("body", "bee_body", [0, 1, 2, 3], ".png", 12, true, true, false);
+		//body.animation.play("body");
+		//body.setFacingFlip(FlxObject.LEFT, true, false);
 		body.parent = this;
 		
 		
 		head = new SpriteSegment(0, 0);
-		head.frames = GraphicsCache.loadGraphicFromAtlas("bee-head", AssetPaths.bee_head__png, AssetPaths.bee_head__xml).atlasFrames;
-		head.animation.addByIndices("head", "sp_bee_head_", [0, 1, 2, 3], ".png", 12, true, true, false);
-		head.animation.play("head");
-		head.setFacingFlip(FlxObject.LEFT, true, false);
+		head.frames = tex;
+		head.animation.frameName = "bee_head.png";
+		//head.animation.addByIndices("head", "sp_bee_head_", [0, 1, 2, 3], ".png", 12, true, true, false);
+		//head.animation.play("head");
+		//head.setFacingFlip(FlxObject.LEFT, true, false);
 		head.parent = this;
 		
 		tail = new SpriteSegment(0, 0);
-		tail.frames = GraphicsCache.loadGraphicFromAtlas("bee-tail", AssetPaths.bee_tail__png, AssetPaths.bee_tail__xml).atlasFrames;
-		tail.animation.addByIndices("tail", "sp_bee_tail_", [0], ".png", 12, true, true, false);
-		tail.animation.play("tail");
-		tail.setFacingFlip(FlxObject.LEFT, true, false);
+		tail.frames = tex;
+		tail.animation.frameName = "bee_butt.png";
+		//tail.animation.addByIndices("tail", "sp_bee_tail_", [0], ".png", 12, true, true, false);
+		//tail.animation.play("tail");
+		//tail.setFacingFlip(FlxObject.LEFT, true, false);
 		tail.parent = this;
 		
 		wings = new SpriteSegment(0, 0);
-		wings.frames = GraphicsCache.loadGraphicFromAtlas("bee-wings", AssetPaths.bee_wing__png, AssetPaths.bee_wing__xml).atlasFrames;
-		wings.animation.addByIndices("wings", "sp_bee_wing_", [0, 1], ".png", 30, true, true, false);
+		wings.frames = tex;
+		wings.animation.addByIndices("wings", "bee_wing_0", [1, 2], ".png", 30, true,false, false);
 		wings.animation.play("wings");
-		wings.setFacingFlip(FlxObject.LEFT, true, false);
+		//wings.setFacingFlip(FlxObject.LEFT, true, false);
 		wings.parent = this;
 		
 		body.x = hitbox.x + (hitbox.width / 2) - (body.width / 2);
 		body.y = hitbox.y + (hitbox.height / 2) - (body.height / 2);
 		
-		tail.x = body.x - 6;
-		tail.y = body.y + 2;
+		tail.x = body.x - 4;
+		tail.y = body.y + 11;
 		
-		head.x = body.x + 0;
-		head.y = body.y - 5;
+		head.x = body.x - 16;
+		head.y = body.y - 21;
 		
-		wings.x = body.x + 3;
-		wings.y = body.y - 4;
+		wings.x = body.x - 13;
+		wings.y = body.y - 5;
 		
-		baseHead = FlxPoint.get(1, -7);
-		baseTail = FlxPoint.get( -6, 2);
+		baseHead = FlxPoint.get(-16, -21);
+		baseTail = FlxPoint.get( -4, 11);
 		
 		trails = [];
 		trails.push( new Trail(tail, Trail.STYLE_RAINBOW, .33));
@@ -131,5 +138,14 @@ class Player extends FlxTypedSpriteGroup<SpriteSegment>
 	override function get_width():Float
 	{
 		return 8;
+	}
+	
+	public function flicker(Duration:Float):Void
+	{
+		FlxSpriteUtil.flicker(this, Duration, 0.02, true, true, function(_)
+		{
+			flickering = false;
+		});
+		flickering = true;
 	}
 }

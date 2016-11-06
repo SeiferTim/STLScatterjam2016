@@ -2,6 +2,7 @@ package;
 import flixel.FlxG;
 import flixel.util.FlxSave;
 import haxe.Serializer;
+import openfl.Assets;
 
 class Globals 
 {
@@ -13,6 +14,8 @@ class Globals
 	static public var letters:Array<String>;
 	static public var weights:Array<Float>;
 	
+	static public var spawns:Array<String>;
+	
 	static public function loadGame():Void
 	{
 		
@@ -20,6 +23,7 @@ class Globals
 		Save.bind("SpellingBee-userData");
 		
 		setupDistribution();
+		setupSpawns();
 		
 	}
 	
@@ -38,6 +42,13 @@ class Globals
 		initialized = false;
 		loadGame();
 		FlxG.resetGame();
+	}
+	
+	private static function setupSpawns():Void
+	{
+		var data = Assets.getText(AssetPaths.level__txt);
+		spawns = data.split("\r\n");
+		
 	}
 	
 	private static function setupDistribution():Void

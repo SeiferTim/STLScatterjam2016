@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="sprites.png">
+	<!--
+	Created with ShoeBox
+	http://renderhjs.net/shoebox/
+	-->
+	<SubTexture name="bee_body.png"	x="0"	y="66"	width="36"	height="23" frameX="-0" frameY="-0" frameWidth="36" frameHeight="23"/>
+	<SubTexture name="bee_butt.png"	x="58"	y="0"	width="37"	height="39" frameX="-0" frameY="-0" frameWidth="37" frameHeight="39"/>
+	<SubTexture name="bee_head.png"	x="0"	y="0"	width="57"	height="65" frameX="-0" frameY="-0" frameWidth="57" frameHeight="65"/>
+	<SubTexture name="bee_wing_01.png"	x="57"	y="66"	width="19"	height="26" frameX="-0" frameY="-0" frameWidth="19" frameHeight="26"/>
+	<SubTexture name="bee_wing_02.png"	x="37"	y="66"	width="19"	height="26" frameX="-0" frameY="-0" frameWidth="19" frameHeight="26"/>
+</TextureAtlas>

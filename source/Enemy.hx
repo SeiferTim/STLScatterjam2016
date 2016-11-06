@@ -14,6 +14,8 @@ class Enemy extends FlxTypedSpriteGroup<SpriteSegment>
 	public var letterPos:FlxPoint;
 	
 	public var body:SpriteSegment;
+	public var head:SpriteSegment;
+	public var wings:SpriteSegment;
 	
 	public function new() 
 	{
@@ -32,13 +34,43 @@ class Enemy extends FlxTypedSpriteGroup<SpriteSegment>
 				
 				health = 1;
 				
+				var tex = GraphicsCache.loadGraphicFromAtlas("enemy-sprites", AssetPaths.enemy_sprites__png, AssetPaths.enemy_sprites__xml).atlasFrames;
+		
+		
+				
 				body = new  SpriteSegment();
-				body.makeGraphic(32, 32, FlxColor.PINK);
+				body.frames = tex;
+				body.animation.addByIndices("body", "enemy_blob_gray_0", [0, 1, 2, 3], ".png", 12, true, false, false);
+				body.animation.play("body");
+		
 				body.isHitbox = true;
 				body.parent = this;
 				add(body);
 				
-				letterPos = FlxPoint.get(16, 16);
+				
+				head = new SpriteSegment();
+				head.frames = tex;
+				head.animation.frameName = "enemy_head_gray.png";
+				head.parent = this;
+				head.isHitbox = false;
+				add(head);
+				
+				wings = new SpriteSegment();
+				wings.frames = tex;
+				wings.animation.addByIndices("wings", "enemy_wing_0", [1, 2], ".png", 30, true);
+				wings.parent = this;
+				wings.isHitbox = false;
+				wings.animation.play("wings");
+				add(wings);
+				
+				head.x = body.x - 35;
+				head.y = body.y - 20;
+				
+				wings.x = body.x + 26;
+				wings.y = body.y + 2;
+				
+				
+				letterPos = FlxPoint.get(40, 40);
 				
 				velocity.x = -160;
 				
@@ -47,6 +79,16 @@ class Enemy extends FlxTypedSpriteGroup<SpriteSegment>
 		}
 		
 		letter = ParentState.spawnLetter(this);
+	}
+	
+	override function get_height():Float 
+	{
+		return 80;
+	}
+	
+	override function get_width():Float
+	{
+		return 80;
 	}
 	
 	override public function update(elapsed:Float):Void 

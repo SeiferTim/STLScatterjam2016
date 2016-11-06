@@ -1,13 +1,13 @@
 #define AppName "The Spelling Bee"
 #define AppExeName "SpellingBee.exe"
-#define SourcePath "C:\Users\seife\Documents\STLScatterjam2016\export\windows\cpp\bin"
+#define SourcePath "C:\Users\Tim\Documents\STLScatterjam2016\export\windows\cpp\bin"
 ;#define AppVersion GetFileVersion(AddBackslash(SourcePath) + AppExeName)
 #define AppVersion "1.0.0.0"
 #define AppPublisher "Too Many Tims"
 
 [Setup]
 AppID={{14A0320E-E91F-4945-864D-79EF96A23D84}
-OutputDir=C:\Users\seife\Documents\STLScatterjam2016\Setups
+OutputDir=C:\Users\Tim\Documents\STLScatterjam2016\Setups
 AppName={#AppName}
 AppPublisher={#AppPublisher}
 AppVersion={#AppVersion}
